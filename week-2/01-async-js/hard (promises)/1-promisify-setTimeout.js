@@ -3,6 +3,15 @@
 */
 
 function wait(n) {
+    let p = new Promise((resolve)=>{
+        setTimeout(()=>{
+            // const en = Date.now()
+            // let diff = end - st
+            
+            resolve()
+        },n*1000)
+    })
+    return p;
 }
 
 module.exports = wait;
