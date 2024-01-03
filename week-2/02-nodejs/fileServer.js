@@ -18,4 +18,38 @@ const path = require('path');
 const app = express();
 
 
+
 module.exports = app;
+
+app.get('/files',async (req,res)=>{
+  //callback method, promise method was not working
+  fs.readdir(path.join(__dirname, './files/'), (err, files) => {
+    if (err) {
+        return res.status(500).json({ error: 'Failed to retrieve files' });
+    }
+    res.json(files);
+    });
+});
+app.get('/file/:filename',(req,res)=>{
+
+  //joins the path 
+  const filepath = path.join(__dirname, './files/', req.params.filename);
+  fs.readFile(filepath,"utf-8",(err,data)=>{
+    if(err){
+      return res.status(404).send('File not found')
+    }
+    res.send(data);
+
+  })
+
+  
+});
+app.all('*', (req, res) => {
+  res.status(404).send('Route not found');
+});
+
+  
+
+app.listen(3000,()=>{
+  console.log("Listening on port 3000")
+})
