@@ -9,7 +9,16 @@ let errorCount = 0;
 // Your task is to
 // 1. Ensure that if there is ever an exception, the end user sees a status code of 404
 // 2. Maintain the errorCount variable whose value should go up every time there is an exception in any endpoint
+function errorCountMiddleWare(err,req,res,next){
+  if(err){
+    res.status(404).send("Error")
+    errorCount++;
+  }else{
+    next();
+  }
 
+}
+app.use(errorCountMiddleWare)
 app.get('/user', function(req, res) {
   throw new Error("User not found");
   res.status(200).json({ name: 'john' });
